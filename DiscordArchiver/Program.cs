@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using DiscordArchiver.data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,7 +16,7 @@ namespace DiscordArchiver {
         public static string BaseUrl = "https://discordapp.com/api/channels/{0}/messages?token={1}&before={2}&limit={3}";
 
         public static string Channel, Token, Out = "out.json", Before = "", After = "";
-        public static int Limit = 5;
+        public static int Limit = 50;
 
         static void Main(string[] args) {
             Channel = args[0];
@@ -72,8 +73,9 @@ namespace DiscordArchiver {
                             jar.RemoveAt(i);
                         }
                     }
-
+                    
                     fullLogs.InsertRange(0,JArray.Parse(currentLog).Select(jToken => jToken.ToObject<DMessage>()).Reverse().ToList());
+                    Thread.Sleep(300);
                     if (jar.Count < Limit || exit) break;
                 }
             };
