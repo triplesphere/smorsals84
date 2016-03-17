@@ -9,7 +9,7 @@ namespace DiscordArchiver.data {
         public DateTime timestamp;
         public bool mention_everyone;
         public string id;
-        public DateTime edited_teimstamp;
+        public DateTime edited_timestamp;
         public DAuthor author;
         public string content;
         public string channel_id;
