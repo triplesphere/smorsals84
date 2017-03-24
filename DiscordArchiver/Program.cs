@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -10,15 +10,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace DiscordArchiver {
-
-    class Program {
+    internal class Program {
 
         public static string BaseUrl = "https://discordapp.com/api/channels/{0}/messages?token={1}&before={2}&limit={3}";
 
         public static string Channel, Token, Out = "out.json", Before = "", After = "";
         public static int Limit = 100;
 
-        static void Main(string[] args) {
+        private static void Main(string[] args) {
 
             Channel = args[0];
             Token = args[1];
@@ -49,7 +48,10 @@ namespace DiscordArchiver {
 
                     var currentLog = "";
                     using (var wc = new WebClient()) {
-                        currentLog = wc.DownloadString(string.Format(BaseUrl, Channel, Token, Before, Limit));
+                        var url = $"https://discordapp.com/api/channels/{Channel}/messages?token={Token}&limit={Limit}";
+                        url += Before != string.Empty ? $"&before={Before}" : "";
+                        url += After != string.Empty ? $"&after={After}" : "";
+                        currentLog = wc.DownloadString(url);
                     }
 
                     Console.WriteLine($"Downloaded Log Part {counter}, Parsing");
